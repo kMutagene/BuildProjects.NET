@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageType>Template</PackageType>
+    <PackProjectInputFile>$(MSBuildProjectFullPath)</PackProjectInputFile>
+    <NoBuild>true</NoBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <TargetFramework>net6.0</TargetFramework>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Title>BuildProject</Title>
+    <Authors>Kevin Schneider</Authors>
+    <Description>A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6</Description>
+    <Summary>scaffold a FAKE + .net6 build project</Summary>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kMutagene/BuildProject</PackageProjectUrl>
+    <PackageTags>build f#</PackageTags>
+    <RepositoryUrl>https://github.com/kMutagene/BuildProject</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ExcludeFromPackage>
+    Content/bin/**/*;
+    Content/obj/**/*;
+    </ExcludeFromPackage>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Content/**/*" Exclude="$(ExcludeFromPackage)">
+      <PackagePath>Content\</PackagePath>
+    </Content>
+  </ItemGroup>
+</Project>
+
