@@ -83,3 +83,27 @@ dotnet run --project ./<output-path>/build.fsproj watchdocs
 ```
 
 please note that the documentation targets assume you have a `docs` folder managed with`fsdocs`.
+    
+### Scripting the build execution
+    
+in your project root, you can create these scripts so you have to type less:
+
+- `build.cmd`:
+    
+    ```
+    @echo off
+    cls
+
+    dotnet run --project ./build/build.fsproj %*
+    ```
+    
+ - `build.sh` (make executable with `chmod u+x`):
+    
+    ```
+    #!/usr/bin/env bash
+
+    set -eu
+    set -o pipefail
+
+    dotnet run --project ./build/build.fsproj "$@"
+    ```   
