@@ -61,7 +61,7 @@ note that testProjects need to be set manually.
 
 ### Using the build project
 
-in your project root, type 
+**in your project root**, type 
 
 ```
 dotnet run --project ./<output-path>/build.fsproj
@@ -73,9 +73,9 @@ you can also pass build targets to run like this:
 dotnet run --project ./<output-path>/build.fsproj <build-target-to-run>
 
 examples include:
+
 ```
 dotnet run --project ./<output-path>/build.fsproj release
-```
 
 dotnet run --project ./<output-path>/build.fsproj prerelease
 
