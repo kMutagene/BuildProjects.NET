@@ -18,6 +18,7 @@
     <PackageTags>build f#</PackageTags>
     <RepositoryUrl>https://github.com/kMutagene/BuildProject</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageVersion>1.0.0</PackageVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ExcludeFromPackage>
