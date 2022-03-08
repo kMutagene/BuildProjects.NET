@@ -71,6 +71,7 @@ you can also pass build targets to run like this:
 
 ```
 dotnet run --project ./<output-path>/build.fsproj <build-target-to-run>
+```
 
 examples include:
 
