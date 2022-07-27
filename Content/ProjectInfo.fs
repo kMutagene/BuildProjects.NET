@@ -21,6 +21,9 @@ let projectRepo = $"https://github.com/{gitOwner}/{project}"
 
 let pkgDir = "pkg"
 
+// Create RELEASE_NOTES.md if not existing. Or "release" would throw an error.
+Fake.Extensions.Release.ReleaseNotes.ensure()
+
 let release = ReleaseNotes.load "RELEASE_NOTES.md"
 
 let stableVersion = SemVer.parse release.NugetVersion

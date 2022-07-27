@@ -10,6 +10,13 @@ open BlackFox.Fake
 open Fake.Core
 open Fake.IO.Globbing.Operators
 
+open System.Text.RegularExpressions
+
+/// https://github.com/Freymaurer/Fake.Extensions.Release#release-notes-in-nuget
+let private replaceCommitLink input = 
+    let commitLinkPattern = @"\[\[#[a-z0-9]*\]\(.*\)\] "
+    Regex.Replace(input,commitLinkPattern,"")
+
 let pack = BuildTask.create "Pack" [clean; build; runTests] {
     if promptYesNo (sprintf "creating stable package with version %s OK?" stableVersionTag ) 
         then
@@ -20,7 +27,7 @@ let pack = BuildTask.create "Pack" [clean; build; runTests] {
                     {p.MSBuildParams with 
                         Properties = ([
                             "Version",stableVersionTag
-                            "PackageReleaseNotes",  (release.Notes |> String.concat "\r\n")
+                            "PackageReleaseNotes",  (release.Notes |> List.map replaceCommitLink |> String.concat "\r\n" )
                         ] @ p.MSBuildParams.Properties)
                     }
                 {
@@ -42,7 +49,7 @@ let packPrerelease = BuildTask.create "PackPrerelease" [setPrereleaseTag; clean;
                             {p.MSBuildParams with 
                                 Properties = ([
                                     "Version", prereleaseTag
-                                    "PackageReleaseNotes",  (release.Notes |> String.toLines )
+                                    "PackageReleaseNotes",  (release.Notes |> List.map replaceCommitLink  |> String.toLines )
                                 ] @ p.MSBuildParams.Properties)
                             }
                         {
