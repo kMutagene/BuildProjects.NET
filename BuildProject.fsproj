@@ -18,7 +18,8 @@
     <PackageTags>build f#</PackageTags>
     <RepositoryUrl>https://github.com/kMutagene/BuildProject</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.1.0</PackageVersion>
+    <PackageReleaseNotes>Add release notes auto generation based on commits</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <ExcludeFromPackage>
