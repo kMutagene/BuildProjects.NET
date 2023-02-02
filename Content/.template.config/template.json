@@ -12,7 +12,7 @@
   "sourceName": "BuildProject",
   "symbols": {
     "project-name": {
-      "description": "The name of the project. usualle equal to the repo anme on github and the .sln file to build. If not, customize manually.",
+      "description": "The name of the project. usually equal to the repo anme on github and the .sln file to build. If not, customize manually.",
       "type": "parameter",
       "replaces": "{PROJECTNAME}",
       "defaultValue": "TODO: set PROJECTNAME"
@@ -22,6 +22,12 @@
       "type": "parameter",
       "replaces": "{GITOWNER}",
       "defaultValue": "TODO: set GITOWNER"
+    },
+    "target-framework": {
+      "description": "The target framework of the build project (net6.0 or net7.0). default is net6.0",
+      "type": "parameter",
+      "replaces": "{TFM}",
+      "defaultValue": "net6.0"
     }
   }
 }

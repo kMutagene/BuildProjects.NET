@@ -5,21 +5,21 @@
     <PackProjectInputFile>$(MSBuildProjectFullPath)</PackProjectInputFile>
     <NoBuild>true</NoBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
   <PropertyGroup>
     <Title>BuildProject</Title>
     <Authors>Kevin Schneider</Authors>
-    <Description>A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6</Description>
-    <Summary>scaffold a FAKE + .net6 build project</Summary>
+    <Description>A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6/7</Description>
+    <Summary>scaffold a FAKE + .net6/7 build project</Summary>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/kMutagene/BuildProject</PackageProjectUrl>
     <PackageTags>build f#</PackageTags>
     <RepositoryUrl>https://github.com/kMutagene/BuildProject</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageVersion>1.1.0</PackageVersion>
-    <PackageReleaseNotes>Add release notes auto generation based on commits</PackageReleaseNotes>
+    <PackageVersion>2.0.0</PackageVersion>
+    <PackageReleaseNotes>Update fake dependencies and add TFM argument</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <ExcludeFromPackage>

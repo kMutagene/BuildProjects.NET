@@ -1,6 +1,6 @@
 # BuildProject
 
-A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6
+A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6/7
 
 ## Installation
 
@@ -20,7 +20,7 @@ where
 
 - `--git-owner` is the name of the user/org that owns the github repo.
 - `--project-name` is the name of both the .sln file and the github repo. leave this unset and adapt manually if those differ
-- `-o` specifies the output directory.
+- `-o` specifies the output directory. I will usually use a `build` folder in the root of my repository.
 
 The template will generate the following files:
 
@@ -34,6 +34,7 @@ TestTasks.fs
 PackageTasks.fs
 DocumentationTasks.fs
 ReleaseTasks.fs
+ReleaseNotesTasks.fs
 Build.fs
 ```
 
