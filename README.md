@@ -1,6 +1,15 @@
 # BuildProject
 
-A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6/7
+A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6/7- [BuildProject](#buildproject)
+- [BuildProject](#buildproject)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Template Parameters](#template-parameters)
+    - [Basic use case](#basic-use-case)
+    - [Adding test projects](#adding-test-projects)
+    - [Using the build project](#using-the-build-project)
+    - [Scripting the build execution](#scripting-the-build-execution)
+
 
 ## Installation
 
@@ -10,17 +19,49 @@ dotnet new --install BuildProject::*
 
 ## Usage
 
-### Initializing the template
+### Template Parameters
 
 ```
-dotnet new BuildProject --git-owner <git-owner> --project-name <project-name> -o <output-directory>
+Usage:
+  dotnet new BuildProject [options] [template options]
+
+Options:
+  -n, --name <name>       The name for the output being created. If no name is specified, the name of the output
+                          directory is used.
+  -o, --output <output>   Location to place the generated output.
+  --dry-run               Displays a summary of what would happen if the given command line were run if it would result
+                          in a template creation.
+  --force                 Forces content to be generated even if it would change existing files.
+  --no-update-check       Disables checking for the template package updates when instantiating a template.
+  --project <project>     The project that should be used for context evaluation.
+  -lang, --language <F#>  Specifies the template language to instantiate.
+  --type <project>        Specifies the template type to instantiate.
+
+Template options:
+  -pn, --project-name <project-name>          The name of the project. usually equal to the repo anme on github and the
+                                              .sln file to build. If not, customize manually.
+                                              Type: string
+                                              Default: TODO: set PROJECTNAME
+  -go, --git-owner <git-owner>                The name of the organization or github user that owns the github repo
+                                              Type: string
+                                              Default: TODO: set GITOWNER
+  -tf, --target-framework <target-framework>  The target framework of the build project (net6.0 or net7.0). default is
+                                              net6.0
+                                              Type: string
+                                              Default: net6.0
+```
+
+### Basic use case
+
+```
+dotnet new BuildProject -go <git-owner> -pn <project-name> -o <output-directory>
 ```
 
 where 
 
-- `--git-owner` is the name of the user/org that owns the github repo.
-- `--project-name` is the name of both the .sln file and the github repo. leave this unset and adapt manually if those differ
-- `-o` specifies the output directory. I will usually use a `build` folder in the root of my repository.
+- `<git-owner>` is the name of the user/org that owns the github repo.
+- `<project-name>` is the name of both the .sln file and the github repo. leave this unset and adapt manually if those differ
+- `<output-directory>` specifies the output directory. I will usually use a `build` folder in the root of my repository.
 
 The template will generate the following files:
 
@@ -60,6 +101,29 @@ let projectRepo = $"https://github.com/{gitOwner}/{project}"
 
 note that testProjects need to be set manually.
 
+### Adding test projects
+
+I usually use the [Expecto template]() to initialize a test project in a `tests` folder in the repository root like this:
+
+```
+C:.
+├───build
+│   └───<build project content initialized by this template>
+├───src
+│   └───<project-name>
+└───tests
+    └───testproject
+```
+
+to make use of the test build tasks provided by this template, you have to add the test projects to run inside `ProjectInfo.fs`:
+
+```fsharp
+let testProjects = 
+    [
+        "tests/testproject/testproject.fsproj"
+    ]
+```
+
 ### Using the build project
 
 **in your project root**, type 
@@ -77,7 +141,7 @@ dotnet run --project ./<output-path>/build.fsproj <build-target-to-run>
 examples include:
 
 ```
-dotnet run --project ./<output-path>/build.fsproj release
+dotnet run --project ./<output-path>/build.fsproj runtests
 
 dotnet run --project ./<output-path>/build.fsproj prerelease
 
