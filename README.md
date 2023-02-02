@@ -1,6 +1,7 @@
 # BuildProject
 
-A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6/7- [BuildProject](#buildproject)
+A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6/7
+
 - [BuildProject](#buildproject)
   - [Installation](#installation)
   - [Usage](#usage)
