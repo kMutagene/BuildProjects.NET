@@ -104,7 +104,7 @@ note that testProjects need to be set manually.
 
 ### Adding test projects
 
-I usually use the [Expecto template]() to initialize a test project in a `tests` folder in the repository root like this:
+I usually use the [Expecto template](https://github.com/MNie/Expecto.Template) to initialize a test project in a `tests` folder in the repository root like this:
 
 ```
 C:.
