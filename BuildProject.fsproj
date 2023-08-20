@@ -13,6 +13,7 @@
     <Authors>Kevin Schneider</Authors>
     <Description>A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6/7</Description>
     <Summary>scaffold a FAKE + .net6/7 build project</Summary>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/kMutagene/BuildProject</PackageProjectUrl>
     <PackageTags>build f#</PackageTags>
@@ -28,9 +29,11 @@
     </ExcludeFromPackage>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
     <Content Include="Content/**/*" Exclude="$(ExcludeFromPackage)">
       <PackagePath>Content\</PackagePath>
     </Content>
   </ItemGroup>
+  <ItemGroup />
 </Project>
 
