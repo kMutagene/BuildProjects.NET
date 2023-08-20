@@ -1,6 +1,6 @@
 ﻿module ReleaseNotesTasks
 
-#if (individuaPackageVersions)
+#if (individual-package-versions)
 
 // indivudual project release notes do not support automated release notes generation at the moment.
 

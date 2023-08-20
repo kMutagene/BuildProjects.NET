@@ -18,8 +18,8 @@
     <PackageTags>build f#</PackageTags>
     <RepositoryUrl>https://github.com/kMutagene/BuildProject</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageVersion>2.0.0</PackageVersion>
-    <PackageReleaseNotes>Update fake dependencies and add TFM argument</PackageReleaseNotes>
+    <PackageVersion>3.0.0</PackageVersion>
+    <PackageReleaseNotes>Add `` flag for enabling projects being build and released with individual versions and release notes</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <ExcludeFromPackage>

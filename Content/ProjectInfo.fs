@@ -2,7 +2,7 @@
 
 open Fake.Core
 
-#if (individuaPackageVersions)
+#if (individual-package-versions)
 
 /// Contains relevant information about a project (e.g. version info, project location)
 type ProjectInfo = {
@@ -51,13 +51,13 @@ type ProjectInfo = {
         }
 
 // adapt this to reflect the core project in your repository. The only effect this will have is the version displayed in the docs, as it is currently only possible to have one version displayed there.
-let coreProject = ProjectInfo.create("", "", "")
+let CoreProject = ProjectInfo.create("", "", "")
 
 let projects = 
     [
         // add relative paths (from project root) to your projects here, including individual reslease notes files
         // e.g. ProjectInfo.create("MyProject", "src/MyProject/MyProject.fsproj", "src/MyProject/RELEASE_NOTES.md")
-        coreProject
+        CoreProject
     ]
 
 #endif
@@ -67,7 +67,7 @@ let project = "{PROJECTNAME}"
 let testProjects = 
     [
         // add relative paths (from project root) to your testprojects here
-#if (individuaPackageVersions)
+#if (individual-package-versions)
         // e.g. ProjectInfo.create("MyTestProject", "tests/MyTestProject/MyTestProject.fsproj")
 #endif
     ]
@@ -84,7 +84,7 @@ let projectRepo = $"https://github.com/{gitOwner}/{project}"
 
 let pkgDir = "pkg"
 
-#if (individuaPackageVersions)
+#if (individual-package-versions)
 
 /// docs are always targeting the version of the core project
 let stableDocsVersionTag = CoreProject.PackageVersionTag

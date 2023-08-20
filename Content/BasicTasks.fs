@@ -7,14 +7,6 @@ open Fake.IO.Globbing.Operators
 
 open ProjectInfo
 
-let setPrereleaseTag = BuildTask.create "SetPrereleaseTag" [] {
-    printfn "Please enter pre-release package suffix"
-    let suffix = System.Console.ReadLine()
-    prereleaseSuffix <- suffix
-    prereleaseTag <- (sprintf "%s-%s" release.NugetVersion suffix)
-    isPrerelease <- true
-}
-
 let clean = BuildTask.create "Clean" [] {
     !! "src/**/bin"
     ++ "src/**/obj"
@@ -24,7 +16,22 @@ let clean = BuildTask.create "Clean" [] {
     |> Shell.cleanDirs 
 }
 
-#if (individuaPackageVersions)
+#if (individual-package-versions)
+
+/// Buildtask for setting a prerelease tag (also sets the mutable isPrerelease to true, and the PackagePrereleaseTag of all project infos accordingly.)
+let setPrereleaseTag =
+    BuildTask.create "SetPrereleaseTag" [] {
+        printfn "Please enter pre-release package suffix"
+        let suffix = System.Console.ReadLine()
+        prereleaseSuffix <- suffix
+        isPrerelease <- true
+        projects
+        |> List.iter (fun p ->
+            p.PackagePrereleaseTag <- (sprintf "%s-%s" p.PackageVersionTag suffix)
+        )
+        // 
+        prereleaseTag <- (sprintf "%s-%s" CoreProject.PackageVersionTag suffix)
+    }
 
 /// builds the solution file (dotnet build solution.sln)
 let buildSolution =
@@ -79,6 +86,14 @@ let build = BuildTask.create "Build" [clean] {
 }
 
 #else
+
+let setPrereleaseTag = BuildTask.create "SetPrereleaseTag" [] {
+    printfn "Please enter pre-release package suffix"
+    let suffix = System.Console.ReadLine()
+    prereleaseSuffix <- suffix
+    prereleaseTag <- (sprintf "%s-%s" release.NugetVersion suffix)
+    isPrerelease <- true
+}
 
 let build = BuildTask.create "Build" [clean] {
     solutionFile

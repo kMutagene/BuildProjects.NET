@@ -6,7 +6,7 @@ open BasicTasks
 
 open BlackFox.Fake
 
-#if (individuaPackageVersions)
+#if (individual-package-versions)
 
 let buildDocs =
     BuildTask.create "BuildDocs" [ build ] {

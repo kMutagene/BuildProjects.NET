@@ -6,7 +6,7 @@ open Fake.DotNet
 open ProjectInfo
 open BasicTasks
 
-#if (individuaPackageVersions)
+#if (individual-package-versions)
 
 let buildTests = 
     BuildTask.create "BuildTests" [clean; build] {

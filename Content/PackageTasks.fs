@@ -8,9 +8,10 @@ open TestTasks
 
 open BlackFox.Fake
 open Fake.Core
+open Fake.DotNet
 open Fake.IO.Globbing.Operators
 
-#if (individuaPackageVersions)
+#if (individual-package-versions)
 
 let pack = BuildTask.create "Pack" [ clean; build; runTests ] {
     projects

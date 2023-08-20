@@ -15,7 +15,7 @@ open Fake.Tools
 open Fake.IO
 open Fake.IO.Globbing.Operators
 
-#if (individuaPackageVersions)
+#if (individual-package-versions)
 
 let createTag =
     BuildTask.create "CreateTag" [ clean; build; runTests; pack ] {
@@ -119,6 +119,32 @@ let publishNugetPrerelease =
             failwith "aborted"
     }
 
+let releaseDocs =  BuildTask.create "ReleaseDocs" [buildDocs] {
+    let msg = 
+        sprintf "release docs for version %s?" stableDocsVersionTag
+    if promptYesNo msg then
+        Shell.cleanDir "temp"
+        Git.CommandHelper.runSimpleGitCommand "." (sprintf "clone %s temp/gh-pages --depth 1 -b gh-pages" projectRepo) |> ignore
+        Shell.copyRecursive "output" "temp/gh-pages" true |> printfn "%A"
+        Git.CommandHelper.runSimpleGitCommand "temp/gh-pages" "add ." |> printfn "%s"
+        let cmd = sprintf """commit -a -m "Update generated documentation for version %s""" stableDocsVersionTag
+        Git.CommandHelper.runSimpleGitCommand "temp/gh-pages" cmd |> printfn "%s"
+        Git.Branches.push "temp/gh-pages"
+    else failwith "aborted"
+}
+
+let prereleaseDocs =  BuildTask.create "PrereleaseDocs" [buildDocsPrerelease] {
+    let msg = sprintf "release docs for version %s?" prereleaseTag
+    if promptYesNo msg then
+        Shell.cleanDir "temp"
+        Git.CommandHelper.runSimpleGitCommand "." (sprintf "clone %s temp/gh-pages --depth 1 -b gh-pages" projectRepo) |> ignore
+        Shell.copyRecursive "output" "temp/gh-pages" true |> printfn "%A"
+        Git.CommandHelper.runSimpleGitCommand "temp/gh-pages" "add ." |> printfn "%s"
+        let cmd = sprintf """commit -a -m "Update generated documentation for version %s""" prereleaseTag
+        Git.CommandHelper.runSimpleGitCommand "temp/gh-pages" cmd |> printfn "%s"
+        Git.Branches.push "temp/gh-pages"
+    else failwith "aborted"
+}
 #else
 let createTag = BuildTask.create "CreateTag" [clean; build; runTests; pack] {
     if promptYesNo (sprintf "tagging branch with %s OK?" stableVersionTag ) then
@@ -162,10 +188,11 @@ let publishNugetPrerelease = BuildTask.create "PublishNugetPrerelease" [clean; b
             if not result.OK then failwith "failed to push packages"
     else failwith "aborted"
 }
-#endif
 
 let releaseDocs =  BuildTask.create "ReleaseDocs" [buildDocs] {
-    let msg = sprintf "release docs for version %s?" stableVersionTag
+    let msg = 
+        sprintf "release docs for version %s?" 
+            stableVersionTag
     if promptYesNo msg then
         Shell.cleanDir "temp"
         Git.CommandHelper.runSimpleGitCommand "." (sprintf "clone %s temp/gh-pages --depth 1 -b gh-pages" projectRepo) |> ignore
@@ -189,3 +216,4 @@ let prereleaseDocs =  BuildTask.create "PrereleaseDocs" [buildDocsPrerelease] {
         Git.Branches.push "temp/gh-pages"
     else failwith "aborted"
 }
+#endif
