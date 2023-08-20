@@ -188,6 +188,8 @@ Since v3.0.0, the template supports individual project versions and release note
 
 This is helpful in a monorepo that contains projects that have decoupled versions, instead of having the same version for all projects per release..
 
+For an example of a larger project that uses this kind of set up, have a look at the [build pipeline of Plotly.NET](https://github.com/plotly/Plotly.NET/tree/dev/build)
+
 To enable this feature, use the `--individual-package-versions` flag when creating the template.
 
 The rest of the setup is quite similar to the basic usecase, with the difference that you have to specify both projects and testprojects in `ProjectInfo.fs` using the `ProjectInfo` type.
