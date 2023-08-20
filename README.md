@@ -23,6 +23,9 @@ dotnet new --install BuildProject::*
 ### Template Parameters
 
 ```
+BuildProject (F#)
+Author: Kevin Schneider
+
 Usage:
   dotnet new BuildProject [options] [template options]
 
@@ -50,6 +53,10 @@ Template options:
                                               net6.0
                                               Type: string
                                               Default: net6.0
+  -ipv, --individual-package-versions         If set, the build project will support individual package versions and
+                                              release notes per project.
+                                              Type: bool
+                                              Default: false
 ```
 
 ### Basic use case
@@ -174,3 +181,27 @@ in your project root, you can create these scripts so you have to type less:
 
     dotnet run --project ./build/build.fsproj "$@"
     ```   
+
+### Setting up individual project versions and release notes
+
+Since v3.0.0, the template supports individual project versions and release notes per project.
+
+This is helpful in a monorepo that contains projects that have decoupled versions, instead of having the same version for all projects per release..
+
+To enable this feature, use the `--individual-package-versions` flag when creating the template.
+
+The rest of the setup is quite similar to the basic usecase, with the difference that you have to specify both projects and testprojects in `ProjectInfo.fs` using the `ProjectInfo` type.
+
+```fsharp
+let projects = 
+    [
+        // add relative paths (from project root) to your projects here, including individual reslease notes files
+        // e.g. ProjectInfo.create("MyProject", "src/MyProject/MyProject.fsproj", "src/MyProject/RELEASE_NOTES.md") // a project with individual release notes
+    ]
+
+let testProjects = 
+    [
+        // add relative paths (from project root) to your testprojects here
+        // e.g. ProjectInfo.create("MyTestProject", "tests/MyTestProject/MyTestProject.fsproj") // test projects do not have release notes.
+    ]
+```
