@@ -27,7 +27,16 @@
       "description": "The target framework of the build project (net6.0 or net7.0). default is net6.0",
       "type": "parameter",
       "replaces": "{TFM}",
+      "datatype": "choice",
+      "choices": [
+        "net6.0",
+        "net7.0"
+      ],
       "defaultValue": "net6.0"
+    },
+    "individuaPackageVersions": {
+      "description": "If set, the build project will support individual package versions and release notes per project.",
+      "type": "parameter"
     }
   }
 }

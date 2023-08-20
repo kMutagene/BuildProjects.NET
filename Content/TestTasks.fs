@@ -6,6 +6,23 @@ open Fake.DotNet
 open ProjectInfo
 open BasicTasks
 
+#if (individuaPackageVersions)
+
+let buildTests = 
+    BuildTask.create "BuildTests" [clean; build] {
+        testProjects
+        |> List.iter (fun pInfo ->
+            let proj = pInfo.ProjFile
+            proj
+            |> DotNet.build (fun p ->
+                p
+                |> DotNet.Options.withCustomParams (Some "--no-dependencies")
+            )
+        )
+    }
+
+#endif
+
 let runTests = BuildTask.create "RunTests" [clean; build] {
     testProjects
     |> Seq.iter (fun testProject ->
