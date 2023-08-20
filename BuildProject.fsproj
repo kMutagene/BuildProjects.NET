@@ -19,7 +19,7 @@
     <RepositoryUrl>https://github.com/kMutagene/BuildProject</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageVersion>3.0.0</PackageVersion>
-    <PackageReleaseNotes>Add `` flag for enabling projects being build and released with individual versions and release notes</PackageReleaseNotes>
+    <PackageReleaseNotes>Add `individual-package-versions` flag for enabling projects being built and released with individual versions and release notes</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <ExcludeFromPackage>
