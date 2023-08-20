@@ -10,7 +10,7 @@ A template for scaffolding a modern build pipeline for your project using FAKE a
     - [Adding test projects](#adding-test-projects)
     - [Using the build project](#using-the-build-project)
     - [Scripting the build execution](#scripting-the-build-execution)
-
+    - [Setting up individual project versions and release notes](#setting-up-individual-project-versions-and-release-notes)
 
 ## Installation
 
