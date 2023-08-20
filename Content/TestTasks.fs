@@ -23,7 +23,21 @@ let buildTests =
         )
     }
 
-#endif
+let runTests = BuildTask.create "RunTests" [clean; build] {
+    testProjects
+    |> Seq.iter (fun testProjectInfo ->
+        Fake.DotNet.DotNet.test
+            (fun testParams ->
+                { testParams with
+                    Logger = Some "console;verbosity=detailed"
+                    Configuration = DotNet.BuildConfiguration.fromString configuration
+                    NoBuild = true
+                })
+            testProjectInfo.ProjFile)
+}
+
+
+#else
 
 let runTests = BuildTask.create "RunTests" [clean; build] {
     testProjects
@@ -38,3 +52,5 @@ let runTests = BuildTask.create "RunTests" [clean; build] {
         ) testProject
     )
 }
+
+#endif
