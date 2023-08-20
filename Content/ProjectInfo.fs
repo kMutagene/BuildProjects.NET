@@ -50,10 +50,14 @@ type ProjectInfo = {
             AssemblyInformationalVersion = ""
         }
 
-let individualProjects = 
+// adapt this to reflect the core project in your repository. The only effect this will have is the version displayed in the docs, as it is currently only possible to have one version displayed there.
+let coreProject = ProjectInfo.create("", "", "")
+
+let projects = 
     [
         // add relative paths (from project root) to your projects here, including individual reslease notes files
         // e.g. ProjectInfo.create("MyProject", "src/MyProject/MyProject.fsproj", "src/MyProject/RELEASE_NOTES.md")
+        coreProject
     ]
 
 #endif
@@ -80,6 +84,25 @@ let projectRepo = $"https://github.com/{gitOwner}/{project}"
 
 let pkgDir = "pkg"
 
+#if (individuaPackageVersions)
+
+/// docs are always targeting the version of the core project
+let stableDocsVersionTag = CoreProject.PackageVersionTag
+
+/// branch tag is always the version of the core project
+let branchTag = CoreProject.PackageVersionTag
+
+/// prerelease suffix used by prerelease buildtasks
+let mutable prereleaseSuffix = ""
+
+/// prerelease tag used by prerelease buildtasks
+let mutable prereleaseTag = ""
+
+/// mutable switch used to signal that we are building a prerelease version, used in prerelease buildtasks
+let mutable isPrerelease = false
+
+#else
+
 // Create RELEASE_NOTES.md if not existing. Or "release" would throw an error.
 Fake.Extensions.Release.ReleaseNotes.ensure()
 
@@ -94,3 +117,5 @@ let mutable prereleaseSuffix = ""
 let mutable prereleaseTag = ""
 
 let mutable isPrerelease = false
+
+#endif

@@ -1,5 +1,11 @@
 ﻿module ReleaseNotesTasks
 
+#if (individuaPackageVersions)
+
+// indivudual project release notes do not support automated release notes generation at the moment.
+
+#else
+
 open Fake.Extensions.Release
 open BlackFox.Fake
 
@@ -27,3 +33,5 @@ let githubDraft = BuildTask.createFn "GithubDraft" [] (fun config ->
         config
     )
 )
+
+#endif

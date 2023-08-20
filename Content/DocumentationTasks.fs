@@ -6,6 +6,54 @@ open BasicTasks
 
 open BlackFox.Fake
 
+#if (individuaPackageVersions)
+
+let buildDocs =
+    BuildTask.create "BuildDocs" [ build ] {
+        printfn "building docs with stable version %s" stableDocsVersionTag
+
+        runDotNet
+            (sprintf
+                "fsdocs build --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
+                stableDocsVersionTag)
+            "./"
+    }
+
+let buildDocsPrerelease =
+    BuildTask.create "BuildDocsPrerelease" [ setPrereleaseTag; build ] {
+        printfn "building docs with prerelease version %s" prereleaseTag
+
+        runDotNet
+            (sprintf
+                "fsdocs build --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
+                prereleaseTag)
+            "./"
+    }
+
+let watchDocs =
+    BuildTask.create "WatchDocs" [ build ] {
+        printfn "watching docs with stable version %s" stableDocsVersionTag
+
+        runDotNet
+            (sprintf
+                "fsdocs watch --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
+                stableDocsVersionTag)
+            "./"
+    }
+
+let watchDocsPrerelease =
+    BuildTask.create "WatchDocsPrerelease" [ setPrereleaseTag; build ] {
+        printfn "watching docs with prerelease version %s" prereleaseTag
+
+        runDotNet
+            (sprintf
+                "fsdocs watch --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
+                prereleaseTag)
+            "./"
+    }
+
+#else
+
 let buildDocs = BuildTask.create "BuildDocs" [build] {
     printfn "building docs with stable version %s" stableVersionTag
     runDotNet 
@@ -33,3 +81,4 @@ let watchDocsPrerelease = BuildTask.create "WatchDocsPrerelease" [setPrereleaseT
         (sprintf "fsdocs watch --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s" prereleaseTag)
         "./"
 }
+#endif

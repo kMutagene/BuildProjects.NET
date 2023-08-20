@@ -16,7 +16,9 @@ let buildTests =
             proj
             |> DotNet.build (fun p ->
                 p
-                |> DotNet.Options.withCustomParams (Some "--no-dependencies")
+                // Use this if you want to speed up your build. Especially helpful in large projects
+                // Ensure that the order in your project list is correct (e.g. projects that are depended on are built first)
+                //|> DotNet.Options.withCustomParams (Some "--no-dependencies")
             )
         )
     }
@@ -32,28 +34,6 @@ let runTests = BuildTask.create "RunTests" [clean; build] {
                     Logger = Some "console;verbosity=detailed"
                     Configuration = DotNet.BuildConfiguration.fromString configuration
                     NoBuild = true
-            }
-        ) testProject
-    )
-}
-
-// to do: use this once we have actual tests
-let runTestsWithCodeCov = BuildTask.create "RunTestsWithCodeCov" [clean; build] {
-    let standardParams = Fake.DotNet.MSBuild.CliArguments.Create ()
-    testProjects
-    |> Seq.iter(fun testProject -> 
-        Fake.DotNet.DotNet.test(fun testParams ->
-            {
-                testParams with
-                    MSBuildParams = {
-                        standardParams with
-                            Properties = [
-                                "AltCover","true"
-                                "AltCoverCobertura","../../codeCov.xml"
-                                "AltCoverForce","true"
-                            ]
-                    };
-                    Logger = Some "console;verbosity=detailed"
             }
         ) testProject
     )
