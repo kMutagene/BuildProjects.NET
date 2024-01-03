@@ -19,11 +19,9 @@
     <PackageTags>build f#</PackageTags>
     <RepositoryUrl>https://github.com/kMutagene/BuildProject</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageVersion>4.0.0</PackageVersion>
+    <PackageVersion>4.1.0</PackageVersion>
     <PackageReleaseNotes>
-        - support .net8.0
-        - proper choice flag for tfm
-        - disable internal binlog everywhere
+        - fix tfm parameter having no effect
     </PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
