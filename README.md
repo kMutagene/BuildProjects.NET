@@ -42,21 +42,23 @@ Options:
   --type <project>        Specifies the template type to instantiate.
 
 Template options:
-  -pn, --project-name <project-name>          The name of the project. usually equal to the repo anme on github and the
-                                              .sln file to build. If not, customize manually.
-                                              Type: string
-                                              Default: TODO: set PROJECTNAME
-  -go, --git-owner <git-owner>                The name of the organization or github user that owns the github repo
-                                              Type: string
-                                              Default: TODO: set GITOWNER
-  -tf, --target-framework <target-framework>  The target framework of the build project (net6.0 or net7.0). default is
-                                              net6.0
-                                              Type: string
-                                              Default: net6.0
-  -ipv, --individual-package-versions         If set, the build project will support individual package versions and
-                                              release notes per project.
-                                              Type: bool
-                                              Default: false
+  -pn, --project-name <project-name>   The name of the project. usually equal to the repo anme on github and the .sln
+                                       file to build. If not, customize manually.
+                                       Type: string
+                                       Default: TODO: set PROJECTNAME
+  -go, --git-owner <git-owner>         The name of the organization or github user that owns the github repo
+                                       Type: string
+                                       Default: TODO: set GITOWNER
+  -tf, --target-framework <choice>     The target framework of the build project
+                                       Type: choice
+                                         net6.0  use .NET 6 as target framework for the project
+                                         net7.0  use .NET 7 as target framework for the project
+                                         net8.0  use .NET 8 as target framework for the project (default)
+                                       Default: net8.0
+  -ipv, --individual-package-versions  If set, the build project will support individual package versions and release
+                                       notes per project.
+                                       Type: bool
+                                       Default: false
 ```
 
 ### Basic use case
