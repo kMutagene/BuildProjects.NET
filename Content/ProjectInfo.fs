@@ -64,7 +64,7 @@ let projects =
 
 let project = "{PROJECTNAME}"
 
-let testProjects = 
+let testProjects : string list= 
     [
         // add relative paths (from project root) to your testprojects here
 #if (individual-package-versions)

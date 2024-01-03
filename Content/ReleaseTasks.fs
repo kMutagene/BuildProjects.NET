@@ -154,7 +154,7 @@ let createTag = BuildTask.create "CreateTag" [clean; build; runTests; pack] {
         failwith "aborted"
 }
 
-let createPrereleaseTag = BuildTask.create "CreatePrereleaseTag" [setPrereleaseTag; clean; build; runTests; packPrerelease] {
+let createPrereleaseTag = BuildTask.create "CreatePrereleaseTag" [setPrereleaseTag; clean; buildSolution; runTests; packPrerelease] {
     if promptYesNo (sprintf "tagging branch with %s OK?" prereleaseTag ) then 
         Git.Branches.tag "" prereleaseTag
         Git.Branches.pushTag "" projectRepo prereleaseTag
@@ -162,27 +162,26 @@ let createPrereleaseTag = BuildTask.create "CreatePrereleaseTag" [setPrereleaseT
         failwith "aborted"
 }
 
-
-let publishNuget = BuildTask.create "PublishNuget" [clean; build; runTests; pack] {
+let publishNuget = BuildTask.create "PublishNuget" [clean; buildSolution; runTests; pack] {
     let targets = (!! (sprintf "%s/*.*pkg" pkgDir ))
     for target in targets do printfn "%A" target
     let msg = sprintf "release package with version %s?" stableVersionTag
     if promptYesNo msg then
         let source = "https://api.nuget.org/v3/index.json"
-        let apikey =  Environment.environVar "NUGET_KEY_CSB"
+        let apikey =  Environment.environVar "YOUR_KEY_HERE"
         for artifact in targets do
             let result = DotNet.exec id "nuget" (sprintf "push -s %s -k %s %s --skip-duplicate" source apikey artifact)
             if not result.OK then failwith "failed to push packages"
     else failwith "aborted"
 }
 
-let publishNugetPrerelease = BuildTask.create "PublishNugetPrerelease" [clean; build; runTests; packPrerelease] {
+let publishNugetPrerelease = BuildTask.create "PublishNugetPrerelease" [clean; buildSolution; runTests; packPrerelease] {
     let targets = (!! (sprintf "%s/*.*pkg" pkgDir ))
     for target in targets do printfn "%A" target
     let msg = sprintf "release package with version %s?" prereleaseTag 
     if promptYesNo msg then
         let source = "https://api.nuget.org/v3/index.json"
-        let apikey =  Environment.environVar "NUGET_KEY_CSB"
+        let apikey =  Environment.environVar "YOUR_KEY_HERE"
         for artifact in targets do
             let result = DotNet.exec id "nuget" (sprintf "push -s %s -k %s %s --skip-duplicate" source apikey artifact)
             if not result.OK then failwith "failed to push packages"

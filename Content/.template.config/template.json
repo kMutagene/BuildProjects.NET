@@ -24,10 +24,26 @@
       "defaultValue": "TODO: set GITOWNER"
     },
     "target-framework": {
-      "description": "The target framework of the build project (net6.0 or net7.0). default is net6.0",
+      "description": "The target framework of the build project",
       "type": "parameter",
+      "datatype": "choice",
       "replaces": "{TFM}",
-      "defaultValue": "net6.0"
+      "defaultValue": "net8.0",
+      "allowMultipleValues": false,
+      "choices": [
+        {
+          "choice": "net6.0",
+          "description": "use .NET 6 as target framework for the project"
+        },
+        {
+          "choice": "net7.0",
+          "description": "use .NET 7 as target framework for the project"
+        },
+        {
+          "choice": "net8.0",
+          "description": "use .NET 8 as target framework for the project (default)"
+        }
+      ]
     },
     "individual-package-versions": {
       "description": "If set, the build project will support individual package versions and release notes per project.",

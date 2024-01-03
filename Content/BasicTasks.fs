@@ -43,11 +43,14 @@ let buildSolution =
                     Properties = ([
                         "warnon", "3390"
                     ])
+                    DisableInternalBinLog = true
                 }
             {
                 p with 
                     MSBuildParams = msBuildParams
+                    
             }
+            |> DotNet.Options.withCustomParams (Some "-tl")
         )
     }
 
@@ -60,6 +63,7 @@ let buildSolution =
 /// - AssemblyInformationalVersion
 ///
 /// - warnon:3390 for xml doc formatting warnings on compilation
+
 let build = BuildTask.create "Build" [clean] {
     projects
     |> List.iter (fun pInfo ->
@@ -73,6 +77,7 @@ let build = BuildTask.create "Build" [clean] {
                         "InformationalVersion", pInfo.AssemblyInformationalVersion
                         "warnon", "3390"
                     ])
+                    DisableInternalBinLog = true
                 }
             {
                 p with 
@@ -80,7 +85,11 @@ let build = BuildTask.create "Build" [clean] {
             }
             // Use this if you want to speed up your build. Especially helpful in large projects
             // Ensure that the order in your project list is correct (e.g. projects that are depended on are built first)
-            //|> DotNet.Options.withCustomParams (Some "--no-dependencies") 
+#if ( target-framework == "net8.0" )
+            |> DotNet.Options.withCustomParams (Some "--no-dependencies -tl")
+#else
+            |> DotNet.Options.withCustomParams (Some "--no-dependencies")
+#endif
         )
     )
 }
@@ -95,9 +104,16 @@ let setPrereleaseTag = BuildTask.create "SetPrereleaseTag" [] {
     isPrerelease <- true
 }
 
-let build = BuildTask.create "Build" [clean] {
-    solutionFile
-    |> DotNet.build id
-}
+/// builds the solution file (dotnet build solution.sln)
+let buildSolution =
+    BuildTask.create "BuildSolution" [ clean ] { 
+        solutionFile 
+        |> DotNet.build (fun p ->
+            { p with MSBuildParams = { p.MSBuildParams with DisableInternalBinLog = true }}
+#if ( target-framework == "net8.0" )
+            |> DotNet.Options.withCustomParams (Some "-tl")
+#endif
+        )
+    }
 
 #endif

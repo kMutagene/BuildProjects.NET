@@ -15,10 +15,17 @@ let buildTests =
             let proj = pInfo.ProjFile
             proj
             |> DotNet.build (fun p ->
-                p
+                {
+                    p with
+                        MSBuildParams = { p.MSBuildParams with DisableInternalBinLog = true}
+                }
                 // Use this if you want to speed up your build. Especially helpful in large projects
                 // Ensure that the order in your project list is correct (e.g. projects that are depended on are built first)
-                //|> DotNet.Options.withCustomParams (Some "--no-dependencies")
+#if ( target-framework == "net8.0" )
+                |> DotNet.Options.withCustomParams (Some "--no-dependencies -tl")
+#else
+                |> DotNet.Options.withCustomParams (Some "--no-dependencies")
+#endif
             )
         )
     }
@@ -32,24 +39,36 @@ let runTests = BuildTask.create "RunTests" [clean; build] {
                     Logger = Some "console;verbosity=detailed"
                     Configuration = DotNet.BuildConfiguration.fromString configuration
                     NoBuild = true
-                })
-            testProjectInfo.ProjFile)
+                    MSBuildParams = { testParams.MSBuildParams with DisableInternalBinLog = true }
+                }
+#if ( target-framework == "net8.0" )
+                |> DotNet.Options.withCustomParams (Some "--no-dependencies -tl")
+#else
+                |> DotNet.Options.withCustomParams (Some "--no-dependencies")
+#endif
+            )
+            testProjectInfo.ProjFile
+        )
 }
 
 
 #else
 
-let runTests = BuildTask.create "RunTests" [clean; build] {
+let runTests = BuildTask.create "RunTests" [clean; buildSolution] {
     testProjects
     |> Seq.iter (fun testProject ->
-        Fake.DotNet.DotNet.test(fun testParams ->
-            {
-                testParams with
-                    Logger = Some "console;verbosity=detailed"
-                    Configuration = DotNet.BuildConfiguration.fromString configuration
-                    NoBuild = true
+        testProject
+        |> Fake.DotNet.DotNet.test (fun testParams ->
+            { testParams with
+                Logger = Some "console;verbosity=detailed"
+                Configuration = DotNet.BuildConfiguration.fromString configuration
+                NoBuild = true
+                MSBuildParams = { testParams.MSBuildParams with DisableInternalBinLog = true }
             }
-        ) testProject
+#if ( target-framework == "net8.0" )
+            |> DotNet.Options.withCustomParams (Some "-tl")
+#endif
+        )
     )
 }
 
