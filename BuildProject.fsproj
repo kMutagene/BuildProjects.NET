@@ -12,15 +12,19 @@
     <Title>BuildProject</Title>
     <Authors>Kevin Schneider</Authors>
     <Description>A template for scaffolding a modern build pipeline for your project using FAKE and .NET 6/7</Description>
-    <Summary>scaffold a FAKE + .net6/7 build project</Summary>
+    <Summary>scaffold a FAKE + .net6/7/8 build project</Summary>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/kMutagene/BuildProject</PackageProjectUrl>
     <PackageTags>build f#</PackageTags>
     <RepositoryUrl>https://github.com/kMutagene/BuildProject</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageVersion>3.1.0</PackageVersion>
-    <PackageReleaseNotes>fix conditional runTests target</PackageReleaseNotes>
+    <PackageVersion>4.0.0</PackageVersion>
+    <PackageReleaseNotes>
+        - support .net8.0
+        - proper choice flag for tfm
+        - disable internal binlog everywhere
+    </PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <ExcludeFromPackage>

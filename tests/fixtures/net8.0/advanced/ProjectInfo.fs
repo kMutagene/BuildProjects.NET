@@ -2,7 +2,6 @@
 
 open Fake.Core
 
-#if (individual-package-versions)
 
 /// Contains relevant information about a project (e.g. version info, project location)
 type ProjectInfo = {
@@ -60,23 +59,20 @@ let projects =
         CoreProject
     ]
 
-#endif
 
-let project = "{PROJECTNAME}"
+let project = "test"
 
 let testProjects = 
     [
         // add relative paths (from project root) to your testprojects here
-#if (individual-package-versions)
         // e.g. ProjectInfo.create("MyTestProject", "tests/MyTestProject/MyTestProject.fsproj")
-#endif
     ]
 
 let solutionFile  = $"{project}.sln"
 
 let configuration = "Release"
 
-let gitOwner = "{GITOWNER}"
+let gitOwner = "testowner"
 
 let gitHome = $"https://github.com/{gitOwner}"
 
@@ -84,7 +80,6 @@ let projectRepo = $"https://github.com/{gitOwner}/{project}"
 
 let pkgDir = "pkg"
 
-#if (individual-package-versions)
 
 /// docs are always targeting the version of the core project
 let stableDocsVersionTag = CoreProject.PackageVersionTag
@@ -100,22 +95,3 @@ let mutable prereleaseTag = ""
 
 /// mutable switch used to signal that we are building a prerelease version, used in prerelease buildtasks
 let mutable isPrerelease = false
-
-#else
-
-// Create RELEASE_NOTES.md if not existing. Or "release" would throw an error.
-Fake.Extensions.Release.ReleaseNotes.ensure()
-
-let release = ReleaseNotes.load "RELEASE_NOTES.md"
-
-let stableVersion = SemVer.parse release.NugetVersion
-
-let stableVersionTag = (sprintf "%i.%i.%i" stableVersion.Major stableVersion.Minor stableVersion.Patch )
-
-let mutable prereleaseSuffix = ""
-
-let mutable prereleaseTag = ""
-
-let mutable isPrerelease = false
-
-#endif

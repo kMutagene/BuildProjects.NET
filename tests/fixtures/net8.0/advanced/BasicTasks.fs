@@ -16,7 +16,6 @@ let clean = BuildTask.create "Clean" [] {
     |> Shell.cleanDirs 
 }
 
-#if (individual-package-versions)
 
 /// Buildtask for setting a prerelease tag (also sets the mutable isPrerelease to true, and the PackagePrereleaseTag of all project infos accordingly.)
 let setPrereleaseTag =
@@ -50,9 +49,7 @@ let buildSolution =
                     MSBuildParams = msBuildParams
                     
             }
-#if( target-framework == "net8.0" )
             |> DotNet.Options.withCustomParams (Some "-tl")
-#endif
         )
     }
 
@@ -87,35 +84,7 @@ let build = BuildTask.create "Build" [clean] {
             }
             // Use this if you want to speed up your build. Especially helpful in large projects
             // Ensure that the order in your project list is correct (e.g. projects that are depended on are built first)
-#if( target-framework == "net8.0" )
             |> DotNet.Options.withCustomParams (Some "--no-dependencies -tl")
-#else
-            |> DotNet.Options.withCustomParams (Some "--no-dependencies")
-#endif
         )
     )
 }
-
-#else
-
-let setPrereleaseTag = BuildTask.create "SetPrereleaseTag" [] {
-    printfn "Please enter pre-release package suffix"
-    let suffix = System.Console.ReadLine()
-    prereleaseSuffix <- suffix
-    prereleaseTag <- (sprintf "%s-%s" release.NugetVersion suffix)
-    isPrerelease <- true
-}
-
-/// builds the solution file (dotnet build solution.sln)
-let buildSolution =
-    BuildTask.create "BuildSolution" [ clean ] { 
-        solutionFile 
-        |> DotNet.build (fun p ->
-            { p with MSBuildParams = { p.MSBuildParams with DisableInternalBinLog = true }}
-#if( target-framework == "net8.0" )
-            |> DotNet.Options.withCustomParams (Some "-tl")
-#endif
-        )
-    }
-
-#endif
